@@ -35,8 +35,8 @@
     .nav-links { display: flex; gap: 1.2rem; }
     .nav-links button { border: none; background: transparent; color: var(--text); cursor: pointer; font: inherit; font-weight: 500; position: relative; padding: .3rem .15rem; transition: color .3s; }
     .nav-links button::after { content: ""; position: absolute; left: 0; bottom: -2px; height: 2px; width: 0; background: linear-gradient(90deg, var(--cyan), var(--pink)); transition: width .35s ease; box-shadow: 0 0 12px rgba(0,234,255,.85); }
-    .nav-links button:hover, .nav-links button.active { color: #fff; }
-    .nav-links button:hover::after, .nav-links button.active::after { width: 100%; }
+    .nav-links button:hover { color: #fff; }
+    .nav-links button:hover::after { width: 100%; }
 
     .profile-orb {
       position: fixed; left: 50%; top: 40%; width: clamp(150px, 20vw, 250px); aspect-ratio: 1 / 1; border-radius: 50%;
@@ -80,6 +80,7 @@
     .contact-grid { display: grid; grid-template-columns: repeat(5, minmax(160px,1fr)); gap: 1rem; }
     .contact-card { text-align: center; text-decoration: none; color: var(--text); }
     .icon { font-size: 2rem; margin-bottom: .6rem; }
+    .icon img { width: 34px; height: 34px; object-fit: contain; display: block; margin: 0 auto; }
     .contact-card:hover { box-shadow: 0 0 25px rgba(0,234,255,.35), inset 0 0 15px rgba(124,92,255,.25); }
     .courses-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
     .course-card { min-height: 240px; position: relative; overflow: hidden; }
@@ -164,11 +165,11 @@
     </section>
     <section id="contacts"><h2 class="section-title">Contacts</h2><p class="section-sub">Connect with me through the channels below.</p>
       <div class="contact-grid">
-        <a class="card contact-card" href="https://www.facebook.com/ejgan14" target="_blank" rel="noopener noreferrer"><div class="icon">📘</div><h4>Facebook</h4><p>Earl Janssen B. Gan</p></a>
-        <a class="card contact-card" href="https://www.instagram.com/koixie_/" target="_blank" rel="noopener noreferrer"><div class="icon">📸</div><h4>Instagram</h4><p>koixie_</p></a>
-        <a class="card contact-card" href="mailto:ejgan22@gmail.com"><div class="icon">✉️</div><h4>Gmail</h4><p>EJGan22@gmail.com</p></a>
-        <a class="card contact-card" href="tel:+630000000000"><div class="icon">📱</div><h4>Phone Number</h4><p>+63 936 535 3404</p></a>
-        <a class="card contact-card" href="https://www.tiktok.com/@koixies" target="_blank" rel="noopener noreferrer"><div class="icon">💻</div><h4>GitHub</h4><p>Koixie</p></a>
+        <a class="card contact-card" href="https://www.facebook.com/ejgan14" target="_blank" rel="noopener noreferrer"><div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/500px-Facebook_Logo_%282019%29.png" alt="Facebook logo placeholder"></div><h4>Facebook</h4><p>Earl Janssen B. Gan</p></a>
+        <a class="card contact-card" href="https://www.instagram.com/koixie_/" target="_blank" rel="noopener noreferrer"><div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1280px-Instagram_icon.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20200512141346" alt="Instagram logo placeholder"></div><h4>Instagram</h4><p>koixie_</p></a>
+        <a class="card contact-card" href="mailto:ejgan22@gmail.com"><div class="icon"><img src="https://images.icon-icons.com/2642/PNG/512/google_mail_gmail_logo_icon_159346.png" alt="Gmail logo placeholder"></div><h4>Gmail</h4><p>EJGan22@gmail.com</p></a>
+        <a class="card contact-card" href="tel:+639365353404"><div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Phone logo placeholder"></div><h4>Phone Number</h4><p>+63 936 535 3404</p></a>
+        <a class="card contact-card" href="https://www.tiktok.com/@koixies" target="_blank" rel="noopener noreferrer"><div class="icon"><img src="https://static.vecteezy.com/system/resources/thumbnails/016/716/450/small_2x/tiktok-icon-free-png.png" alt="GitHub logo placeholder"></div><h4>Tiktok</h4><p>Koixie</p></a>
       </div>
     </section>
     <section id="courses"><h2 class="section-title">Course Portfolio</h2><p class="section-sub">Click a subject to open a fullscreen atmospheric gallery.</p>
@@ -196,7 +197,6 @@
 
     const navBtns = document.querySelectorAll('.nav-links button');
     navBtns.forEach(btn => btn.addEventListener('click', () => {
-      navBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active');
       document.getElementById(btn.dataset.target).scrollIntoView({ behavior: 'smooth' });
     }));
 
@@ -205,9 +205,9 @@
     sections.forEach(s => observer.observe(s));
 
     const modalData = {
-      personal: { title: 'Personal Life', body: 'Share your story, interests, volunteer work, life goals, and personal values here.' },
-      education: { title: 'Educational Attainment', body: 'Add your schools attended, degrees earned, awards, certifications, and notable academic milestones.' },
-      skills: { title: 'Skills and Talents', body: 'List your software skills, classroom management strengths, leadership abilities, and creative talents.' }
+      personal: { title: 'Personal Life', body: 'wait lng' },
+      education: { title: 'Educational Attainment', body: 'wait lng' },
+      skills: { title: 'Skills and Talents', body: 'wait lng' }
     };
     const modal = document.getElementById('infoModal');
     document.querySelectorAll('[data-modal]').forEach(card => card.addEventListener('click', () => {
@@ -260,7 +260,7 @@
       container.innerHTML = contentTypes.map((type, i) => `
         <article class="exp-card galeria-book-3d__item" tabindex="0">
           <img src="https://picsum.photos/seed/${activeCourse}-${activeTerm}-${i}/900/700" alt="${type} placeholder image">
-          <div class="exp-info"><h4>${type}</h4><p style="color:#cad5ff">Placeholder ${type.toLowerCase()} content with clickable preview effect.</p></div>
+          <div class="exp-info"><h4>${type}</h4><p style="color:#cad5ff">My ${type.toLowerCase()}</p></div>
         </article>`).join('');
       const expCards = [...container.querySelectorAll('.exp-card')];
       expCards.forEach((card, idx) => {
@@ -303,7 +303,7 @@
       breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject}`;
       renderTerms(activeCourse);
       termView.style.display = 'block'; categoryView.style.display = 'none'; backSubjectBtn.style.display = 'none';
-      main.style.display = 'none'; gallery.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' });
+      main.style.display = 'none'; gallery.classList.add('active', 'visible'); window.scrollTo({ top: 0, behavior: 'smooth' });
     }));
 
     document.getElementById('backCourseBtn').addEventListener('click', () => { gallery.classList.remove('active'); main.style.display = 'block'; });
