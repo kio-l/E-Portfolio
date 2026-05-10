@@ -115,8 +115,8 @@
       box-shadow: 0 16px 55px rgba(4,7,22,.35);
     }
     .featured-shot, .thumb-shot { position: relative; overflow: hidden; border-radius: 14px; border: 1px solid rgba(255,255,255,.16); background: #0d1530; }
-    .featured-shot { min-height: 100%; box-shadow: 0 16px 36px rgba(2,10,34,.45); display:grid; place-items:center; }
-    .featured-shot img { width: 100%; height: 100%; object-fit: contain; transition: transform .45s ease, opacity .35s ease; background: rgba(3,8,24,.5); }
+    .featured-shot { min-height: 100%; box-shadow: 0 16px 36px rgba(2,10,34,.45); display:grid; place-items:center; padding: .65rem; }
+    .featured-shot img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; transition: transform .45s ease, opacity .35s ease; background: rgba(3,8,24,.5); border-radius: 10px; }
     .thumb-stack {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -132,8 +132,6 @@
     .thumb-shot:hover img { transform: scale(1.03); }
     .thumb-shot.active { border-color: rgba(255,255,255,.45); transform: translateY(-1px); opacity: 1; }
     .thumb-shot:not(.active) { opacity: .82; }
-    .viewer-empty { color: rgba(234,240,255,.72); text-align: center; padding: 1rem; line-height: 1.6; font-weight: 300; }
-    .viewer-empty strong { display:block; font-weight: 500; margin-bottom: .3rem; color: rgba(234,240,255,.92); }
     .glass-caption {
       position: absolute; left: .7rem; right: .7rem; bottom: .7rem; z-index: 2;
       padding: .45rem .6rem; border-radius: 10px; font-size: .83rem;
@@ -183,7 +181,7 @@
     </section>
     <section id="about"><h2 class="section-title">About Me</h2><p class="section-sub">Select a category to open details. Replace all placeholders with your personal information.</p>
       <div class="card-grid">
-        <article class="card" data-modal="personal"><h3>Personal Life</h3><p>Background, values, hobbies, and aspirations.</p></article>
+        <article class="card" data-modal="personal"><h3>Personal Background</h3><p>Background, values, profile, and aspirations.</p></article>
         <article class="card" data-modal="education"><h3>Educational Attainment</h3><p>Degrees, certifications, schools, and honors.</p></article>
         <article class="card" data-modal="skills"><h3>Skills and Talents</h3><p>Technical, creative, and communication strengths.</p></article>
       </div>
@@ -240,9 +238,37 @@
     });
 
     const modalData = {
-      personal: { title: 'Personal Life', body: 'wait lng' },
-      education: { title: 'Educational Attainment', body: 'wait lng' },
-      skills: { title: 'Skills and Talents', body: 'wait lng' }
+      personal: {
+        title: 'Personal Background',
+        body: `
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;">
+            <div class="card" style="padding:1rem;"><h4>Profile</h4><ul style="margin-top:.5rem;padding-left:1.1rem;color:var(--muted);line-height:1.65;"><li>21 years old</li><li>Born October 14, 2005 in Manila</li><li>Male</li><li>Single</li></ul></div>
+            <div class="card" style="padding:1rem;"><h4>Residence</h4><p style="margin-top:.5rem;color:var(--muted);line-height:1.65;">1413 Metrica St., Sampaloc, Manila</p></div>
+            <div class="card" style="padding:1rem;"><h4>Academic Status</h4><p style="margin-top:.5rem;color:var(--muted);line-height:1.65;">Bachelor of Secondary Education major in Mathematics student at Universidad de Manila.</p></div>
+            <div class="card" style="padding:1rem;"><h4>Family</h4><ul style="margin-top:.5rem;padding-left:1.1rem;color:var(--muted);line-height:1.65;"><li>Mother: Marites B. Gan</li><li>Father: Rodolfo S. Gan</li></ul></div>
+          </div>`
+      },
+      education: {
+        title: 'Educational Attainment',
+        body: `
+          <div style="display:grid;gap:.8rem;">
+            <div class="card" style="padding:1rem;"><h4>Tertiary Education</h4><p style="margin-top:.45rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Universidad de Manila</strong><br>Bachelor of Secondary Education Major in Mathematics<br>One Mehan Garden, Ermita, Manila, Philippines 1000<br>2023 – Present</p></div>
+            <div class="card" style="padding:1rem;"><h4>Secondary Education</h4><p style="margin-top:.45rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Philippine College of Advanced Arts and Technology</strong><br>1914 Doña Faustina Building, Recto Avenue, Quiapo, Manila<br>2021 – 2023</p><p style="margin-top:.7rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Ramon Magsaysay High School</strong><br>España Boulevard corner Don Quijote St., Sampaloc, Manila<br>2017 – 2021</p></div>
+            <div class="card" style="padding:1rem;"><h4>Primary Education</h4><p style="margin-top:.45rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">General M. Hizon Elementary School</strong><br>J. Fajardo St., Sampaloc, Manila<br>2014 – 2017</p><p style="margin-top:.7rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Laong Laan Elementary School</strong><br>Laong Laan St. corner Blumentritt St., Sampaloc, Manila<br>2011 – 2014</p></div>
+          </div>`
+      },
+      skills: {
+        title: 'Skills and Talents',
+        body: `
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;">
+            <div class="card" style="padding:1rem;"><h4>Communication</h4><p style="margin-top:.45rem;color:var(--muted);">Clear verbal and written communication for class discussions and reports.</p></div>
+            <div class="card" style="padding:1rem;"><h4>Mathematical Reasoning</h4><p style="margin-top:.45rem;color:var(--muted);">Strong foundation in logic, pattern analysis, and step-by-step problem solving.</p></div>
+            <div class="card" style="padding:1rem;"><h4>Collaboration</h4><p style="margin-top:.45rem;color:var(--muted);">Works effectively with peers on group tasks, lesson outputs, and shared activities.</p></div>
+            <div class="card" style="padding:1rem;"><h4>Presentation Skills</h4><p style="margin-top:.45rem;color:var(--muted);">Confident in presenting ideas and explaining mathematical concepts in a clear way.</p></div>
+            <div class="card" style="padding:1rem;"><h4>Basic Digital Literacy</h4><p style="margin-top:.45rem;color:var(--muted);">Proficient with presentation tools, document formatting, and online learning platforms.</p></div>
+            <div class="card" style="padding:1rem;"><h4>Adaptability & Organization</h4><p style="margin-top:.45rem;color:var(--muted);">Adjusts to class demands and maintains organized study and classroom materials.</p></div>
+          </div>`
+      }
     };
     const modal = document.getElementById('infoModal');
     document.querySelectorAll('[data-modal]').forEach(card => card.addEventListener('click', () => {
@@ -323,29 +349,25 @@
       const safeImages = images?.length ? images : ['assets/placeholder.jpg', 'assets/placeholder-2.jpg', 'assets/placeholder-3.jpg', 'assets/placeholder-4.jpg', 'assets/placeholder-5.jpg'];
       const thumbs = safeImages;
       container.innerHTML = `
-        <article class="featured-shot" id="featuredShot">
-          <div class="viewer-empty" id="viewerEmpty"><strong>Select an image to preview</strong>${label} outputs will appear here with original proportions preserved.</div>
-          <img id="featuredImage" alt="${label} featured output" style="display:none;">
-          <div class="glass-caption" id="featuredCaption" style="display:none;">${label} • Preview</div>
-        </article>
+        <article id="featuredShot"></article>
         <aside class="thumb-stack">
           ${thumbs.map((img, i) => `<article class="thumb-shot" data-image="${img}"><img loading="lazy" src="${img}" alt="${label} item ${i + 1}"></article>`).join('')}
         </aside>`;
-      const featuredEl = document.getElementById('featuredImage');
-      const viewerEmpty = document.getElementById('viewerEmpty');
-      const featuredCaption = document.getElementById('featuredCaption');
+      const featuredMount = document.getElementById('featuredShot');
       const thumbCards = container.querySelectorAll('.thumb-shot');
+      let featuredEl = null;
       thumbCards.forEach((thumb) => {
         thumb.addEventListener('click', () => {
           const nextSrc = thumb.dataset.image;
+          if (!featuredEl) {
+            featuredMount.className = 'featured-shot';
+            featuredMount.innerHTML = `<img id="featuredImage" alt="${label} featured output"><div class="glass-caption" id="featuredCaption">${label} • Preview</div>`;
+            featuredEl = document.getElementById('featuredImage');
+          }
           featuredEl.style.opacity = '0';
-          featuredEl.style.transform = 'scale(0.985)';
+          featuredEl.style.transform = 'scale(0.992)';
           setTimeout(() => {
-            viewerEmpty.style.display = 'none';
-            featuredCaption.style.display = 'block';
-            featuredEl.style.display = 'block';
             featuredEl.setAttribute('src', nextSrc);
-            featuredEl.style.objectFit = 'contain';
             featuredEl.style.transform = 'scale(1)';
             featuredEl.style.opacity = '1';
           }, 180);
