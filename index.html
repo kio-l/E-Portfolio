@@ -97,24 +97,34 @@
     .term-card { padding: 1.2rem; border-radius: 16px; background: linear-gradient(160deg, rgba(124,92,255,.2), rgba(6,15,40,.8)); border: 1px solid rgba(255,255,255,.15); cursor: pointer; transition: transform .35s, box-shadow .35s; }
     .term-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 0 22px rgba(0,234,255,.35); }
 
-    .expanding-gallery { display: flex; gap: 1rem; min-height: 320px; }
-    .exp-card {
-      position: relative; height: 300px; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,.2); cursor: pointer;
-      flex: 1 1 0;
-      transition: flex-grow .75s cubic-bezier(.22,.61,.36,1), transform .75s cubic-bezier(.22,.61,.36,1), box-shadow .6s ease, filter .6s ease, opacity .45s ease;
-      background: #101836;
+    .category-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.2rem; }
+    .category-card { padding: 1.2rem; border-radius: 16px; background: linear-gradient(160deg, rgba(124,92,255,.24), rgba(6,15,40,.88)); border: 1px solid rgba(255,255,255,.15); cursor: pointer; transition: transform .35s, box-shadow .35s; }
+    .category-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 0 22px rgba(0,234,255,.35); }
+
+    .editorial-gallery {
+      height: min(68vh, 560px);
+      display: grid;
+      grid-template-columns: 1.7fr 1fr;
+      gap: .9rem;
+      padding: .7rem;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(255,255,255,.1), rgba(255,255,255,.03));
+      backdrop-filter: blur(12px);
+      box-shadow: 0 16px 55px rgba(4,7,22,.35);
     }
-    .exp-card img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1); transition: transform .55s ease; }
-    .exp-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,5,20,.92), rgba(2,5,20,.12)); }
-    .exp-info { position: absolute; left: 1rem; right: 1rem; bottom: 1rem; z-index: 2; }
-    .exp-card:hover img { transform: scale(1.09); }
-    .exp-card:hover { box-shadow: 0 0 28px rgba(0,234,255,.4); }
-    .exp-card.active { flex-grow: 2.2; transform: translate(-16px, -4px); box-shadow: 0 0 30px rgba(255,78,205,.38); }
-    .exp-card.shifted { transform: translateX(12px); }
-    .expanding-gallery.book-open .exp-card:not(.is-open) { filter: brightness(.86); }
-    .exp-card.is-open { outline: 2px solid rgba(0,234,255,.65); }
-    .exp-card .exp-info p { max-height: 0; opacity: 0; transition: opacity .45s ease, max-height .45s ease; }
-    .exp-card.active .exp-info p { max-height: 120px; opacity: 1; }
+    .featured-shot, .thumb-shot { position: relative; overflow: hidden; border-radius: 14px; border: 1px solid rgba(255,255,255,.16); background: #0d1530; }
+    .featured-shot img, .thumb-shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease, filter .45s ease; }
+    .featured-shot:hover img, .thumb-shot:hover img { transform: scale(1.05); filter: saturate(1.1); }
+    .featured-shot { min-height: 100%; box-shadow: 0 16px 36px rgba(2,10,34,.45); }
+    .thumb-stack { display: grid; grid-template-rows: repeat(4, 1fr); gap: .65rem; min-height: 100%; }
+    .thumb-shot { cursor: pointer; box-shadow: 0 10px 22px rgba(2,10,34,.32); }
+    .thumb-shot.active { outline: 2px solid rgba(0,234,255,.65); transform: translateY(-2px); }
+    .glass-caption {
+      position: absolute; left: .7rem; right: .7rem; bottom: .7rem; z-index: 2;
+      padding: .45rem .6rem; border-radius: 10px; font-size: .83rem;
+      background: rgba(6,11,30,.45); border: 1px solid rgba(255,255,255,.16); backdrop-filter: blur(8px);
+    }
 
     .modal { position: fixed; inset: 0; display: none; place-items: center; z-index: 800; background: rgba(4,7,22,.7); backdrop-filter: blur(8px); }
     .modal.active { display: grid; }
@@ -123,14 +133,15 @@
 
     @media (max-width: 980px) {
       .card-grid, .courses-grid, .term-grid, .contact-grid { grid-template-columns: 1fr; }
-      .expanding-gallery { flex-direction: column; min-height: auto; }
-      .exp-card { height: 240px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .editorial-gallery { grid-template-columns: 1fr; height: auto; max-height: none; }
+      .featured-shot { min-height: 260px; }
+      .thumb-stack { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+      .thumb-shot { min-height: 110px; }
       nav { flex-direction: column; gap: .7rem; }
       .hero h1 { margin-top: 7rem; }
       .profile-orb { width: clamp(120px, 34vw, 170px); }
       .profile-orb.navbar-state { left: 56px; top: 92px; transform: translate(-50%, -50%) scale(.5); }
-      .exp-card.active { transform: translateY(-4px); }
-      .exp-card.shifted { transform: translateY(8px); }
     }
   </style>
 </head>
@@ -181,12 +192,13 @@
   </main>
 
   <section class="gallery" id="galleryView">
-    <div class="gallery-top"><button class="btn" id="backCourseBtn">← Back to Course Portfolio</button><button class="btn" id="backSubjectBtn" style="display:none;">← Back to Subject Terms</button></div>
+    <div class="gallery-top"><button class="btn" id="backCourseBtn">← Back to Course Portfolio</button><button class="btn" id="backSubjectBtn" style="display:none;">← Back to Subject Terms</button><button class="btn" id="backCategoryBtn" style="display:none;">← Back to Categories</button></div>
     <div class="breadcrumb" id="breadcrumb">Course Portfolio / Subject</div>
     <h2 class="section-title" id="galleryTitle">Subject Gallery</h2>
-    <p class="section-sub" id="gallerySub">Choose a term first, then explore Quizzes, Activities, and Major Exam with expanding gallery cards.</p>
+    <p class="section-sub" id="gallerySub">Choose a term, open a category, then explore your outputs in an editorial gallery panel.</p>
     <div id="termView"><div class="term-grid" id="termGrid"></div></div>
-    <div id="categoryView" style="display:none;"><h3 id="categoryTitle" style="margin-bottom:1rem;"></h3><div class="expanding-gallery" id="projectContainer"></div></div>
+    <div id="categoryView" style="display:none;"><h3 id="categoryTitle" style="margin-bottom:1rem;"></h3><div class="category-grid" id="categoryGrid"></div></div>
+    <div id="projectView" style="display:none;"><h3 id="projectTitle" style="margin-bottom:1rem;"></h3><div class="editorial-gallery" id="projectContainer"></div></div>
   </section>
 
   <div class="modal" id="infoModal"><div class="modal-box"><h3 id="modalTitle">Title</h3><p id="modalContent" style="color: var(--muted); margin-top:.8rem;">Content</p><button class="btn" id="closeModal" style="margin-top:1rem;">Close</button></div></div>
@@ -196,9 +208,6 @@
     window.addEventListener('load', () => setTimeout(() => loader.classList.add('hidden'), 700));
 
     const navBtns = document.querySelectorAll('.nav-links button');
-    navBtns.forEach(btn => btn.addEventListener('click', () => {
-      document.getElementById(btn.dataset.target).scrollIntoView({ behavior: 'smooth' });
-    }));
 
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')), { threshold: 0.2 });
@@ -231,6 +240,18 @@
     };
 
     const contentTypes = ['Quizzes', 'Activities', 'Major Exam'];
+    const galleryImages = {
+      curriculum: {
+        prelim: { quizzes: ['assets/curriculum/prelim/quizzes/quiz-1.jpg','assets/curriculum/prelim/quizzes/quiz-2.jpg','assets/curriculum/prelim/quizzes/quiz-3.jpg','assets/curriculum/prelim/quizzes/quiz-4.jpg','assets/curriculum/prelim/quizzes/quiz-5.jpg'], activities: ['assets/curriculum/prelim/activities/activity-1.jpg','assets/curriculum/prelim/activities/activity-2.jpg','assets/curriculum/prelim/activities/activity-3.jpg','assets/curriculum/prelim/activities/activity-4.jpg','assets/curriculum/prelim/activities/activity-5.jpg'], major_exam: ['assets/curriculum/prelim/exam/exam-1.jpg','assets/curriculum/prelim/exam/exam-2.jpg','assets/curriculum/prelim/exam/exam-3.jpg','assets/curriculum/prelim/exam/exam-4.jpg','assets/curriculum/prelim/exam/exam-5.jpg'] },
+        midterm: { quizzes: ['assets/curriculum/midterm/quizzes/quiz-1.jpg','assets/curriculum/midterm/quizzes/quiz-2.jpg','assets/curriculum/midterm/quizzes/quiz-3.jpg','assets/curriculum/midterm/quizzes/quiz-4.jpg','assets/curriculum/midterm/quizzes/quiz-5.jpg'], activities: ['assets/curriculum/midterm/activities/activity-1.jpg','assets/curriculum/midterm/activities/activity-2.jpg','assets/curriculum/midterm/activities/activity-3.jpg','assets/curriculum/midterm/activities/activity-4.jpg','assets/curriculum/midterm/activities/activity-5.jpg'], major_exam: ['assets/curriculum/midterm/exam/exam-1.jpg','assets/curriculum/midterm/exam/exam-2.jpg','assets/curriculum/midterm/exam/exam-3.jpg','assets/curriculum/midterm/exam/exam-4.jpg','assets/curriculum/midterm/exam/exam-5.jpg'] },
+        finals: { quizzes: ['assets/curriculum/finals/quizzes/quiz-1.jpg','assets/curriculum/finals/quizzes/quiz-2.jpg','assets/curriculum/finals/quizzes/quiz-3.jpg','assets/curriculum/finals/quizzes/quiz-4.jpg','assets/curriculum/finals/quizzes/quiz-5.jpg'], activities: ['assets/curriculum/finals/activities/activity-1.jpg','assets/curriculum/finals/activities/activity-2.jpg','assets/curriculum/finals/activities/activity-3.jpg','assets/curriculum/finals/activities/activity-4.jpg','assets/curriculum/finals/activities/activity-5.jpg'], major_exam: ['assets/curriculum/finals/exam/exam-1.jpg','assets/curriculum/finals/exam/exam-2.jpg','assets/curriculum/finals/exam/exam-3.jpg','assets/curriculum/finals/exam/exam-4.jpg','assets/curriculum/finals/exam/exam-5.jpg'] }
+      },
+      assessment: {
+        prelim: { quizzes: ['assets/assessment/prelim/quizzes/quiz-1.jpg','assets/assessment/prelim/quizzes/quiz-2.jpg','assets/assessment/prelim/quizzes/quiz-3.jpg','assets/assessment/prelim/quizzes/quiz-4.jpg','assets/assessment/prelim/quizzes/quiz-5.jpg'], activities: ['assets/assessment/prelim/activities/activity-1.jpg','assets/assessment/prelim/activities/activity-2.jpg','assets/assessment/prelim/activities/activity-3.jpg','assets/assessment/prelim/activities/activity-4.jpg','assets/assessment/prelim/activities/activity-5.jpg'], major_exam: ['assets/assessment/prelim/exam/exam-1.jpg','assets/assessment/prelim/exam/exam-2.jpg','assets/assessment/prelim/exam/exam-3.jpg','assets/assessment/prelim/exam/exam-4.jpg','assets/assessment/prelim/exam/exam-5.jpg'] },
+        midterm: { quizzes: ['assets/assessment/midterm/quizzes/quiz-1.jpg','assets/assessment/midterm/quizzes/quiz-2.jpg','assets/assessment/midterm/quizzes/quiz-3.jpg','assets/assessment/midterm/quizzes/quiz-4.jpg','assets/assessment/midterm/quizzes/quiz-5.jpg'], activities: ['assets/assessment/midterm/activities/activity-1.jpg','assets/assessment/midterm/activities/activity-2.jpg','assets/assessment/midterm/activities/activity-3.jpg','assets/assessment/midterm/activities/activity-4.jpg','assets/assessment/midterm/activities/activity-5.jpg'], major_exam: ['assets/assessment/midterm/exam/exam-1.jpg','assets/assessment/midterm/exam/exam-2.jpg','assets/assessment/midterm/exam/exam-3.jpg','assets/assessment/midterm/exam/exam-4.jpg','assets/assessment/midterm/exam/exam-5.jpg'] },
+        finals: { quizzes: ['assets/assessment/finals/quizzes/quiz-1.jpg','assets/assessment/finals/quizzes/quiz-2.jpg','assets/assessment/finals/quizzes/quiz-3.jpg','assets/assessment/finals/quizzes/quiz-4.jpg','assets/assessment/finals/quizzes/quiz-5.jpg'], activities: ['assets/assessment/finals/activities/activity-1.jpg','assets/assessment/finals/activities/activity-2.jpg','assets/assessment/finals/activities/activity-3.jpg','assets/assessment/finals/activities/activity-4.jpg','assets/assessment/finals/activities/activity-5.jpg'], major_exam: ['assets/assessment/finals/exam/exam-1.jpg','assets/assessment/finals/exam/exam-2.jpg','assets/assessment/finals/exam/exam-3.jpg','assets/assessment/finals/exam/exam-4.jpg','assets/assessment/finals/exam/exam-5.jpg'] }
+      }
+    };
     const gallery = document.getElementById('galleryView');
     const main = document.getElementById('mainContent');
     const title = document.getElementById('galleryTitle');
@@ -239,10 +260,14 @@
     const termView = document.getElementById('termView');
     const categoryView = document.getElementById('categoryView');
     const categoryTitle = document.getElementById('categoryTitle');
+    const categoryGrid = document.getElementById('categoryGrid');
+    const projectView = document.getElementById('projectView');
+    const projectTitle = document.getElementById('projectTitle');
     const container = document.getElementById('projectContainer');
     const backSubjectBtn = document.getElementById('backSubjectBtn');
+    const backCategoryBtn = document.getElementById('backCategoryBtn');
 
-    let activeCourse = ''; let activeTerm = '';
+    let activeCourse = ''; let activeTerm = ''; let activeCategory = '';
 
     function renderTerms(courseKey) {
       const course = galleryData[courseKey];
@@ -255,46 +280,54 @@
       termView.style.display = 'none';
       categoryView.style.display = 'block';
       backSubjectBtn.style.display = 'inline-flex';
+      backCategoryBtn.style.display = 'none';
+      projectView.style.display = 'none';
       categoryTitle.textContent = `${activeTerm} • ${galleryData[activeCourse].subject}`;
       breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject} / ${activeTerm}`;
-      container.innerHTML = contentTypes.map((type, i) => `
-        <article class="exp-card galeria-book-3d__item" tabindex="0">
-          <img src="https://picsum.photos/seed/${activeCourse}-${activeTerm}-${i}/900/700" alt="${type} placeholder image">
-          <div class="exp-info"><h4>${type}</h4><p style="color:#cad5ff">My ${type.toLowerCase()}</p></div>
-        </article>`).join('');
-      const expCards = [...container.querySelectorAll('.exp-card')];
-      expCards.forEach((card, idx) => {
-        const activate = () => {
-          expCards.forEach((c, cardIdx) => {
-            c.classList.remove('active', 'shifted');
-            if (cardIdx > idx) c.classList.add('shifted');
-          });
-          card.classList.add('active');
-        };
-        card.addEventListener('mouseenter', activate);
-        card.addEventListener('click', activate);
-        card.addEventListener('focus', activate);
-      });
-      expCards[0]?.classList.add('active');
-      expCards.slice(1).forEach(c => c.classList.add('shifted'));
+      categoryGrid.innerHTML = contentTypes.map((type) => `<article class="category-card" data-category="${type.toLowerCase().replace(/\\s+/g, '_')}"><h3>${type}</h3><p style="color:var(--muted)">Open ${type} for ${activeTerm} outputs.</p></article>`).join('');
+      categoryGrid.querySelectorAll('.category-card').forEach(card => card.addEventListener('click', () => openCategory(card.dataset.category, card.querySelector('h3').textContent)));
+    }
 
-      const items = container.querySelectorAll('.galeria-book-3d__item');
-      const galleryBookContainer = container;
-      const updateContainerState = () => {
-        const anyOpen = Array.from(items).some((item) => item.classList.contains('is-open'));
-        galleryBookContainer.classList.toggle('book-open', anyOpen);
-      };
-      items.forEach((item) => {
-        item.addEventListener('click', (e) => {
-          e.stopPropagation();
-          item.classList.toggle('is-open');
-          updateContainerState();
+    function buildEditorialGallery(images, label) {
+      const safeImages = images?.length ? images : ['assets/placeholder.jpg', 'assets/placeholder-2.jpg', 'assets/placeholder-3.jpg', 'assets/placeholder-4.jpg', 'assets/placeholder-5.jpg'];
+      const featured = safeImages[0];
+      const thumbs = safeImages.slice(1);
+      container.innerHTML = `
+        <article class="featured-shot" id="featuredShot">
+          <img src="${featured}" alt="${label} featured output">
+          <div class="glass-caption">${label} • Featured</div>
+        </article>
+        <aside class="thumb-stack">
+          ${thumbs.map((img, i) => `<article class="thumb-shot ${i === 0 ? 'active' : ''}" data-image="${img}"><img src="${img}" alt="${label} item ${i + 2}"><div class="glass-caption">${label} • Item ${i + 2}</div></article>`).join('')}
+        </aside>`;
+      const featuredEl = document.getElementById('featuredShot').querySelector('img');
+      const thumbCards = container.querySelectorAll('.thumb-shot');
+      thumbCards.forEach((thumb) => {
+        thumb.addEventListener('click', () => {
+          const currentSrc = featuredEl.getAttribute('src');
+          const nextSrc = thumb.dataset.image;
+          featuredEl.style.transform = 'scale(0.96)';
+          setTimeout(() => {
+            featuredEl.setAttribute('src', nextSrc);
+            thumb.dataset.image = currentSrc;
+            thumb.querySelector('img').setAttribute('src', currentSrc);
+            featuredEl.style.transform = 'scale(1)';
+          }, 180);
+          thumbCards.forEach(t => t.classList.remove('active'));
+          thumb.classList.add('active');
         });
       });
-      document.addEventListener('click', () => {
-        items.forEach((item) => item.classList.remove('is-open'));
-        updateContainerState();
-      });
+    }
+
+    function openCategory(categoryKey, categoryLabel) {
+      activeCategory = categoryKey;
+      categoryView.style.display = 'none';
+      projectView.style.display = 'block';
+      backCategoryBtn.style.display = 'inline-flex';
+      projectTitle.textContent = `${categoryLabel} • ${activeTerm} • ${galleryData[activeCourse].subject}`;
+      breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject} / ${activeTerm} / ${categoryLabel}`;
+      const imgSet = galleryImages?.[activeCourse]?.[activeTerm.toLowerCase()]?.[categoryKey] || [];
+      buildEditorialGallery(imgSet, categoryLabel);
     }
 
     document.querySelectorAll('[data-course]').forEach(card => card.addEventListener('click', () => {
@@ -302,14 +335,18 @@
       title.textContent = galleryData[activeCourse].subject;
       breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject}`;
       renderTerms(activeCourse);
-      termView.style.display = 'block'; categoryView.style.display = 'none'; backSubjectBtn.style.display = 'none';
+      termView.style.display = 'block'; categoryView.style.display = 'none'; projectView.style.display = 'none'; backSubjectBtn.style.display = 'none'; backCategoryBtn.style.display = 'none';
       main.style.display = 'none'; gallery.classList.add('active', 'visible'); window.scrollTo({ top: 0, behavior: 'smooth' });
     }));
 
     document.getElementById('backCourseBtn').addEventListener('click', () => { gallery.classList.remove('active'); main.style.display = 'block'; });
     backSubjectBtn.addEventListener('click', () => {
-      categoryView.style.display = 'none'; termView.style.display = 'block'; backSubjectBtn.style.display = 'none';
+      categoryView.style.display = 'none'; projectView.style.display = 'none'; termView.style.display = 'block'; backSubjectBtn.style.display = 'none'; backCategoryBtn.style.display = 'none';
       breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject}`;
+    });
+    backCategoryBtn.addEventListener('click', () => {
+      projectView.style.display = 'none'; categoryView.style.display = 'block'; backCategoryBtn.style.display = 'none';
+      breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject} / ${activeTerm}`;
     });
 
     const profileOrb = document.getElementById('profileOrb');
@@ -335,7 +372,16 @@
       setTimeout(updateProfileOrbState, 420);
     });
 
-    navBtns.forEach(btn => btn.addEventListener('click', () => setTimeout(updateProfileOrbState, 420)));
+    navBtns.forEach(btn => btn.addEventListener('click', () => {
+      if (gallery.classList.contains('active')) {
+        gallery.classList.remove('active');
+        main.style.display = 'block';
+      }
+      setTimeout(() => {
+        document.getElementById(btn.dataset.target).scrollIntoView({ behavior: 'smooth' });
+        updateProfileOrbState();
+      }, 80);
+    }));
     document.getElementById('backCourseBtn').addEventListener('click', () => setTimeout(updateProfileOrbState, 120));
     backSubjectBtn.addEventListener('click', () => setTimeout(updateProfileOrbState, 120));
     updateProfileOrbState();
