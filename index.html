@@ -298,7 +298,7 @@
     };
     const courseAlias = { assessment: 'assessment', curriculum: 'teacher' };
     const categoryAlias = { quizzes: 'quizzes', activities: 'activities', major_exam: 'exams' };
-    const resolveImagePath = (courseKey, fileName) => `assets/gallery/${courseKey}/${fileName}`;
+    const resolveImagePath = (fileName) => `./${fileName}`;
     const gallery = document.getElementById('galleryView');
     const main = document.getElementById('mainContent');
     const title = document.getElementById('galleryTitle');
@@ -371,7 +371,7 @@
       const courseKey = courseAlias[activeCourse];
       const dataKey = categoryAlias[categoryKey];
       const files = galleryImages?.[courseKey]?.[dataKey] || [];
-      const imgSet = files.map((fileName) => resolveImagePath(courseKey, fileName));
+      const imgSet = files.map((fileName) => resolveImagePath(fileName));
       buildEditorialGallery(imgSet, categoryLabel);
     }
 
