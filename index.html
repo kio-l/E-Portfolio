@@ -93,10 +93,7 @@
     .gallery-top { display: flex; gap: .7rem; flex-wrap: wrap; margin-bottom: 1rem; }
     .breadcrumb { color: rgba(152,163,199,.62); margin-bottom: var(--space-md); font-size: .9rem; font-weight: 400; }
 
-    .term-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.2rem; }
-    .term-card { padding: 1.2rem; border-radius: 16px; background: linear-gradient(160deg, rgba(124,92,255,.2), rgba(6,15,40,.8)); border: 1px solid rgba(255,255,255,.15); cursor: pointer; transition: transform .35s, box-shadow .35s; }
-    .term-card:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 10px 20px rgba(8,14,38,.34); }
-    .term-card.active-item, .category-card.active-item { border-color: rgba(255,255,255,.38); background: linear-gradient(160deg, rgba(124,92,255,.3), rgba(8,19,46,.9)); transform: translateY(-2px); }
+    .category-card.active-item { border-color: rgba(255,255,255,.38); background: linear-gradient(160deg, rgba(124,92,255,.3), rgba(8,19,46,.9)); transform: translateY(-2px); }
 
     .category-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.2rem; }
     .category-card { padding: 1.2rem; border-radius: 16px; background: linear-gradient(160deg, rgba(124,92,255,.24), rgba(6,15,40,.88)); border: 1px solid rgba(255,255,255,.15); cursor: pointer; transition: transform .35s, box-shadow .35s; }
@@ -144,7 +141,7 @@
     .modal.active .modal-box { transform: translateY(0); opacity: 1; }
 
     @media (max-width: 980px) {
-      .card-grid, .courses-grid, .term-grid, .contact-grid { grid-template-columns: 1fr; }
+      .card-grid, .courses-grid, .contact-grid { grid-template-columns: 1fr; }
       .category-grid { grid-template-columns: 1fr; }
       .editorial-gallery { grid-template-columns: 1fr; height: auto; max-height: none; }
       .featured-shot { min-height: 260px; }
@@ -207,8 +204,7 @@
     <div class="gallery-top"><button class="btn" id="backCourseBtn">← Back to Course Portfolio</button><button class="btn" id="backSubjectBtn" style="display:none;">← Back to Subject Terms</button><button class="btn" id="backCategoryBtn" style="display:none;">← Back to Categories</button></div>
     <div class="breadcrumb" id="breadcrumb">Course Portfolio / Subject</div>
     <h2 class="section-title" id="galleryTitle">Subject Gallery</h2>
-    <p class="section-sub" id="gallerySub">Choose a term, open a category, then explore your outputs in an editorial gallery panel.</p>
-    <div id="termView"><div class="term-grid" id="termGrid"></div></div>
+    <p class="section-sub" id="gallerySub">Open a category, then explore your outputs in an editorial gallery panel.</p>
     <div id="categoryView" style="display:none;"><h3 id="categoryTitle" style="margin-bottom:1rem;"></h3><div class="category-grid" id="categoryGrid"></div></div>
     <div id="projectView" style="display:none;"><h3 id="projectTitle" style="margin-bottom:1rem;"></h3><div class="editorial-gallery" id="projectContainer"></div></div>
   </section>
@@ -254,7 +250,7 @@
           <div style="display:grid;gap:.8rem;">
             <div class="card" style="padding:1rem;"><h4>Tertiary Education</h4><p style="margin-top:.45rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Universidad de Manila</strong><br>Bachelor of Secondary Education Major in Mathematics<br>One Mehan Garden, Ermita, Manila, Philippines 1000<br>2023 – Present</p></div>
             <div class="card" style="padding:1rem;"><h4>Secondary Education</h4><p style="margin-top:.45rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Philippine College of Advanced Arts and Technology</strong><br>1914 Doña Faustina Building, Recto Avenue, Quiapo, Manila<br>2021 – 2023</p><p style="margin-top:.7rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Ramon Magsaysay High School</strong><br>España Boulevard corner Don Quijote St., Sampaloc, Manila<br>2017 – 2021</p></div>
-            <div class="card" style="padding:1rem;"><h4>Primary Education</h4><p style="margin-top:.45rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Legarda Elementary School</strong><br>J. Fajardo St., Sampaloc, Manila<br>2014 – 2017</p><p style="margin-top:.7rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Laong Laan Elementary School</strong><br>Laong Laan St. corner Blumentritt St., Sampaloc, Manila<br>2011 – 2014</p></div>
+            <div class="card" style="padding:1rem;"><h4>Primary Education</h4><p style="margin-top:.45rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">General M. Hizon Elementary School</strong><br>J. Fajardo St., Sampaloc, Manila<br>2014 – 2017</p><p style="margin-top:.7rem;color:var(--muted);line-height:1.65;"><strong style="color:var(--text);font-weight:500;">Laong Laan Elementary School</strong><br>Laong Laan St. corner Blumentritt St., Sampaloc, Manila<br>2011 – 2014</p></div>
           </div>`
       },
       skills: {
@@ -281,35 +277,25 @@
     modal.addEventListener('click', e => e.target === modal && modal.classList.remove('active'));
 
     const galleryData = {
-      curriculum: {
-        subject: 'The Teacher and the School Curriculum',
-        terms: ['Prelim', 'Midterm', 'Finals']
-      },
-      assessment: {
-        subject: 'Assessment in Learning 2',
-        terms: ['Prelim', 'Midterm', 'Finals']
-      }
+      curriculum: { subject: 'The Teacher and the School Curriculum' },
+      assessment: { subject: 'Assessment in Learning 2' }
     };
 
     const contentTypes = ['Quizzes', 'Activities', 'Major Exam'];
+    // Naming convention: [type][number][course]
+    // Course abbreviations: a=Assessment in Learning 2, t=The Teacher and the School Curriculum
     const galleryImages = {
-      curriculum: {
-        prelim: { quizzes: ['assets/curriculum/prelim/quizzes/quiz-1.jpg','assets/curriculum/prelim/quizzes/quiz-2.jpg','assets/curriculum/prelim/quizzes/quiz-3.jpg','assets/curriculum/prelim/quizzes/quiz-4.jpg','assets/curriculum/prelim/quizzes/quiz-5.jpg'], activities: ['assets/curriculum/prelim/activities/activity-1.jpg','assets/curriculum/prelim/activities/activity-2.jpg','assets/curriculum/prelim/activities/activity-3.jpg','assets/curriculum/prelim/activities/activity-4.jpg','assets/curriculum/prelim/activities/activity-5.jpg'], major_exam: ['assets/curriculum/prelim/exam/exam-1.jpg','assets/curriculum/prelim/exam/exam-2.jpg','assets/curriculum/prelim/exam/exam-3.jpg','assets/curriculum/prelim/exam/exam-4.jpg','assets/curriculum/prelim/exam/exam-5.jpg'] },
-        midterm: { quizzes: ['assets/curriculum/midterm/quizzes/quiz-1.jpg','assets/curriculum/midterm/quizzes/quiz-2.jpg','assets/curriculum/midterm/quizzes/quiz-3.jpg','assets/curriculum/midterm/quizzes/quiz-4.jpg','assets/curriculum/midterm/quizzes/quiz-5.jpg'], activities: ['assets/curriculum/midterm/activities/activity-1.jpg','assets/curriculum/midterm/activities/activity-2.jpg','assets/curriculum/midterm/activities/activity-3.jpg','assets/curriculum/midterm/activities/activity-4.jpg','assets/curriculum/midterm/activities/activity-5.jpg'], major_exam: ['assets/curriculum/midterm/exam/exam-1.jpg','assets/curriculum/midterm/exam/exam-2.jpg','assets/curriculum/midterm/exam/exam-3.jpg','assets/curriculum/midterm/exam/exam-4.jpg','assets/curriculum/midterm/exam/exam-5.jpg'] },
-        finals: { quizzes: ['assets/curriculum/finals/quizzes/quiz-1.jpg','assets/curriculum/finals/quizzes/quiz-2.jpg','assets/curriculum/finals/quizzes/quiz-3.jpg','assets/curriculum/finals/quizzes/quiz-4.jpg','assets/curriculum/finals/quizzes/quiz-5.jpg'], activities: ['assets/curriculum/finals/activities/activity-1.jpg','assets/curriculum/finals/activities/activity-2.jpg','assets/curriculum/finals/activities/activity-3.jpg','assets/curriculum/finals/activities/activity-4.jpg','assets/curriculum/finals/activities/activity-5.jpg'], major_exam: ['assets/curriculum/finals/exam/exam-1.jpg','assets/curriculum/finals/exam/exam-2.jpg','assets/curriculum/finals/exam/exam-3.jpg','assets/curriculum/finals/exam/exam-4.jpg','assets/curriculum/finals/exam/exam-5.jpg'] }
-      },
-      assessment: {
-        prelim: { quizzes: ['Quiz1p.png','assets/assessment/prelim/quizzes/quiz-2.jpg','assets/assessment/prelim/quizzes/quiz-3.jpg','assets/assessment/prelim/quizzes/quiz-4.jpg','assets/assessment/prelim/quizzes/quiz-5.jpg'], activities: ['assets/assessment/prelim/activities/activity-1.jpg','assets/assessment/prelim/activities/activity-2.jpg','assets/assessment/prelim/activities/activity-3.jpg','assets/assessment/prelim/activities/activity-4.jpg','assets/assessment/prelim/activities/activity-5.jpg'], major_exam: ['assets/assessment/prelim/exam/exam-1.jpg','assets/assessment/prelim/exam/exam-2.jpg','assets/assessment/prelim/exam/exam-3.jpg','assets/assessment/prelim/exam/exam-4.jpg','assets/assessment/prelim/exam/exam-5.jpg'] },
-        midterm: { quizzes: ['assets/assessment/midterm/quizzes/quiz-1.jpg','assets/assessment/midterm/quizzes/quiz-2.jpg','assets/assessment/midterm/quizzes/quiz-3.jpg','assets/assessment/midterm/quizzes/quiz-4.jpg','assets/assessment/midterm/quizzes/quiz-5.jpg'], activities: ['assets/assessment/midterm/activities/activity-1.jpg','assets/assessment/midterm/activities/activity-2.jpg','assets/assessment/midterm/activities/activity-3.jpg','assets/assessment/midterm/activities/activity-4.jpg','assets/assessment/midterm/activities/activity-5.jpg'], major_exam: ['assets/assessment/midterm/exam/exam-1.jpg','assets/assessment/midterm/exam/exam-2.jpg','assets/assessment/midterm/exam/exam-3.jpg','assets/assessment/midterm/exam/exam-4.jpg','assets/assessment/midterm/exam/exam-5.jpg'] },
-        finals: { quizzes: ['assets/assessment/finals/quizzes/quiz-1.jpg','assets/assessment/finals/quizzes/quiz-2.jpg','assets/assessment/finals/quizzes/quiz-3.jpg','assets/assessment/finals/quizzes/quiz-4.jpg','assets/assessment/finals/quizzes/quiz-5.jpg'], activities: ['assets/assessment/finals/activities/activity-1.jpg','assets/assessment/finals/activities/activity-2.jpg','assets/assessment/finals/activities/activity-3.jpg','assets/assessment/finals/activities/activity-4.jpg','assets/assessment/finals/activities/activity-5.jpg'], major_exam: ['assets/assessment/finals/exam/exam-1.jpg','assets/assessment/finals/exam/exam-2.jpg','assets/assessment/finals/exam/exam-3.jpg','assets/assessment/finals/exam/exam-4.jpg','assets/assessment/finals/exam/exam-5.jpg'] }
-      }
+      assessment: { quizzes: ['IMG_20260424_084443.jpg', 'quiz2a.jpg', 'quiz3a.jpg'], activities: ['IMG_20260213_094557.jpg', 'IMG_20260306_083824.jpg', 'IMG_20260407_090915_1.jpg', 'IMG_20260306_083826[1].jpg', 'IMG_20260410_092108.jpg', IMG_20260410_092112.jpg
+, 'IMG_20260410_092118.jpg'], exams: ['exam1a.jpg', 'exam2a.jpg'] },
+      teacher: { quizzes: ['IMG_20260303_090004.jpg', 'quiz2t.jpg', 'quiz3t.jpg'], activities: ['IMG_20260303_092934.jpg', 'IMG_20260505_090441.jpg', 'activity1mt.jpg'], exams: ['exam1t.jpg', 'exam2t.jpg'] }
     };
+    const courseAlias = { assessment: 'assessment', curriculum: 'teacher' };
+    const categoryAlias = { quizzes: 'quizzes', activities: 'activities', major_exam: 'exams' };
+    const resolveImagePath = (courseKey, fileName) => `assets/gallery/${courseKey}/${fileName}`;
     const gallery = document.getElementById('galleryView');
     const main = document.getElementById('mainContent');
     const title = document.getElementById('galleryTitle');
     const breadcrumb = document.getElementById('breadcrumb');
-    const termGrid = document.getElementById('termGrid');
-    const termView = document.getElementById('termView');
     const categoryView = document.getElementById('categoryView');
     const categoryTitle = document.getElementById('categoryTitle');
     const categoryGrid = document.getElementById('categoryGrid');
@@ -319,25 +305,16 @@
     const backSubjectBtn = document.getElementById('backSubjectBtn');
     const backCategoryBtn = document.getElementById('backCategoryBtn');
 
-    let activeCourse = ''; let activeTerm = ''; let activeCategory = '';
+    let activeCourse = ''; let activeCategory = '';
 
-    function renderTerms(courseKey) {
-      const course = galleryData[courseKey];
-      termGrid.innerHTML = course.terms.map(term => `<article class="term-card" data-term="${term}"><h3>${term}</h3><p style="color:var(--muted)">Open ${term} output folders: Quizzes, Activities, and Major Exam.</p></article>`).join('');
-      termGrid.querySelectorAll('.term-card').forEach(card => card.addEventListener('click', () => openTerm(card.dataset.term)));
-    }
-
-    function openTerm(term) {
-      activeTerm = term;
-      termView.style.display = 'none';
+    function renderCategories() {
       categoryView.style.display = 'block';
-      backSubjectBtn.style.display = 'inline-flex';
+      backSubjectBtn.style.display = 'none';
       backCategoryBtn.style.display = 'none';
       projectView.style.display = 'none';
-      categoryTitle.textContent = `${activeTerm} • ${galleryData[activeCourse].subject}`;
-      breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject} / ${activeTerm}`;
-      termGrid.querySelectorAll('.term-card').forEach(card => card.classList.toggle('active-item', card.dataset.term === term));
-      categoryGrid.innerHTML = contentTypes.map((type) => `<article class="category-card" data-category="${type.toLowerCase().replace(/\\s+/g, '_')}"><h3>${type}</h3><p style="color:var(--muted)">Open ${type} for ${activeTerm} outputs.</p></article>`).join('');
+      categoryTitle.textContent = `${galleryData[activeCourse].subject}`;
+      breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject}`;
+      categoryGrid.innerHTML = contentTypes.map((type) => `<article class="category-card" data-category="${type.toLowerCase().replace(/\\s+/g, '_')}"><h3>${type}</h3><p style="color:var(--muted)">Open ${type} outputs.</p></article>`).join('');
       categoryGrid.querySelectorAll('.category-card').forEach(card => card.addEventListener('click', () => {
         categoryGrid.querySelectorAll('.category-card').forEach(c => c.classList.remove('active-item'));
         card.classList.add('active-item');
@@ -346,7 +323,7 @@
     }
 
     function buildEditorialGallery(images, label) {
-      const safeImages = images?.length ? images : ['assets/placeholder.jpg', 'assets/placeholder-2.jpg', 'assets/placeholder-3.jpg', 'assets/placeholder-4.jpg', 'assets/placeholder-5.jpg'];
+      const safeImages = images?.length ? images : [];
       const thumbs = safeImages;
       container.innerHTML = `
         <article id="featuredShot"></article>
@@ -382,9 +359,12 @@
       categoryView.style.display = 'none';
       projectView.style.display = 'block';
       backCategoryBtn.style.display = 'inline-flex';
-      projectTitle.textContent = `${categoryLabel} • ${activeTerm} • ${galleryData[activeCourse].subject}`;
-      breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject} / ${activeTerm} / ${categoryLabel}`;
-      const imgSet = galleryImages?.[activeCourse]?.[activeTerm.toLowerCase()]?.[categoryKey] || [];
+      projectTitle.textContent = `${categoryLabel} • ${galleryData[activeCourse].subject}`;
+      breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject} / ${categoryLabel}`;
+      const courseKey = courseAlias[activeCourse];
+      const dataKey = categoryAlias[categoryKey];
+      const files = galleryImages?.[courseKey]?.[dataKey] || [];
+      const imgSet = files.map((fileName) => resolveImagePath(courseKey, fileName));
       buildEditorialGallery(imgSet, categoryLabel);
     }
 
@@ -392,20 +372,20 @@
       activeCourse = card.dataset.course;
       title.textContent = galleryData[activeCourse].subject;
       breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject}`;
-      renderTerms(activeCourse);
-      termView.style.display = 'block'; categoryView.style.display = 'none'; projectView.style.display = 'none'; backSubjectBtn.style.display = 'none'; backCategoryBtn.style.display = 'none';
+      renderCategories();
+      categoryView.style.display = 'block'; projectView.style.display = 'none'; backSubjectBtn.style.display = 'none'; backCategoryBtn.style.display = 'none';
       main.style.display = 'none'; gallery.classList.add('active', 'visible'); window.scrollTo({ top: 0, behavior: 'smooth' });
     }));
 
     document.getElementById('backCourseBtn').addEventListener('click', () => { gallery.classList.remove('active'); main.style.display = 'block'; container.innerHTML = ''; });
     backSubjectBtn.addEventListener('click', () => {
-      categoryView.style.display = 'none'; projectView.style.display = 'none'; termView.style.display = 'block'; backSubjectBtn.style.display = 'none'; backCategoryBtn.style.display = 'none';
+      categoryView.style.display = 'block'; projectView.style.display = 'none'; backSubjectBtn.style.display = 'none'; backCategoryBtn.style.display = 'none';
       breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject}`;
       container.innerHTML = '';
     });
     backCategoryBtn.addEventListener('click', () => {
       projectView.style.display = 'none'; categoryView.style.display = 'block'; backCategoryBtn.style.display = 'none';
-      breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject} / ${activeTerm}`;
+      breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject}`;
       container.innerHTML = '';
     });
 
