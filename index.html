@@ -30,7 +30,7 @@
     @keyframes floatBG { from { transform: translateY(0) translateX(0);} to { transform: translateY(30px) translateX(20px);} }
     .overlay-gradient { background: linear-gradient(115deg, rgba(124,92,255,.14), rgba(0,234,255,.1), rgba(255,78,205,.12)); mix-blend-mode: screen; opacity: .8; }
 
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) 10vw; backdrop-filter: blur(14px); background: rgba(5,7,18,.45); border-bottom: 1px solid rgba(255,255,255,.1); transition: background .45s var(--ease), border-color .45s var(--ease); }
+    nav { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); width: min(1080px, 92vw); z-index: 500; display: flex; justify-content: space-between; align-items: center; padding: .8rem 1.2rem; backdrop-filter: blur(18px); background: rgba(5,7,18,.48); border: 1px solid rgba(255,255,255,.14); border-radius: 16px; transition: background .45s var(--ease), border-color .45s var(--ease), box-shadow .45s var(--ease); }
     .nav-left { display: flex; align-items: center; gap: .9rem; }
     .brand { font-weight: 700; letter-spacing: .5px; }
     .brand span { color: var(--cyan); text-shadow: 0 0 15px rgba(0,234,255,.8); }
@@ -62,12 +62,17 @@
     .profile-orb:hover { box-shadow: 0 0 45px rgba(0,234,255,.65), 0 0 30px rgba(255,78,205,.45); }
     @keyframes orbFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -7px; } }
 
-    section { min-height: 110vh; padding: 120px 6vw 80px; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    section { padding: 90px 6vw 56px; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
     section.visible { opacity: 1; transform: translateY(0); }
-    .hero { text-align: center; align-items: center; padding-top: clamp(180px, 24vh, 260px); }
+    .hero { min-height: 100vh; text-align: center; align-items: center; padding-top: clamp(150px, 20vh, 220px); position: relative; }
     .hero h1 { font-size: clamp(2.35rem, 5.6vw, 4.6rem); margin-bottom: var(--space-sm); margin-top: clamp(8rem, 14vw, 12rem); font-weight: 700; letter-spacing: .01em; line-height: 1.08; }
     .hero p { color: rgba(152,163,199,.86); max-width: 700px; font-size: clamp(1rem, 2.1vw, 1.25rem); line-height: 1.65; font-weight: 400; }
     .hero .cta { margin-top: var(--space-lg); display: inline-flex; gap: var(--space-sm); flex-wrap: wrap; justify-content: center; }
+    .hero-tags { margin-top: 1rem; display:flex; gap:.55rem; flex-wrap:wrap; justify-content:center; }
+    .hero-tag { padding:.35rem .7rem; border-radius:999px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.06); font-size:.8rem; color:rgba(234,240,255,.86); }
+    .scroll-indicator { position:absolute; bottom:22px; left:50%; transform:translateX(-50%); font-size:.78rem; color:rgba(152,163,199,.72); letter-spacing:.06em; }
+    .scroll-indicator::after { content:""; display:block; width:1px; height:24px; background:rgba(255,255,255,.34); margin:.35rem auto 0; animation: scrollHint 1.8s var(--ease) infinite; }
+    @keyframes scrollHint { 0%{transform:translateY(0);opacity:.7;} 60%{transform:translateY(8px);opacity:.2;} 100%{transform:translateY(0);opacity:.7;} }
 
     .btn { border: 1px solid var(--line); padding: .8rem 1.2rem; border-radius: 999px; background: var(--glass); color: rgba(234,240,255,.92); cursor: pointer; text-decoration: none; transition: transform .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease), border-color .35s var(--ease); backdrop-filter: blur(14px); font-weight: 500; }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(9,16,42,.36); border-color: rgba(255,255,255,.32); background: rgba(255,255,255,.12); }
@@ -77,6 +82,13 @@
     .card-grid { display: grid; grid-template-columns: repeat(3, minmax(220px,1fr)); gap: 1.2rem; }
     .card { background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.03)); border: 1px solid rgba(255,255,255,.14); border-radius: 20px; padding: var(--space-lg); transition: transform .38s var(--ease), box-shadow .38s var(--ease), border-color .38s var(--ease), opacity .38s var(--ease); cursor: pointer; backdrop-filter: blur(12px); }
     .card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,.3); box-shadow: 0 12px 28px rgba(8,14,36,.3); }
+    .card-emphasis { transform: scale(1.02); }
+    .card-grid .card:nth-child(2), .contact-grid .card:nth-child(3), .courses-grid .card:nth-child(2) { margin-top: 10px; }
+    .stagger-in { opacity: 0; transform: translateY(16px); animation: fadeUp .7s var(--ease) forwards; }
+    @keyframes fadeUp { to { opacity:1; transform: translateY(0);} }
+    .card::before { content:""; position:absolute; inset:-120% auto auto -30%; width:40%; height:300%; background:linear-gradient(120deg, rgba(255,255,255,0), rgba(255,255,255,.2), rgba(255,255,255,0)); transform: rotate(18deg); transition: transform .8s var(--ease); pointer-events:none; }
+    .card { position: relative; overflow: hidden; }
+    .card:hover::before { transform: translateX(260%) rotate(18deg); }
     .contact-grid { display: grid; grid-template-columns: repeat(5, minmax(160px,1fr)); gap: 1rem; }
     .contact-card { text-align: center; text-decoration: none; color: var(--text); }
     .icon { font-size: 2rem; margin-bottom: .6rem; }
@@ -115,17 +127,17 @@
     .featured-shot { position: relative; overflow: visible; border-radius: 14px; border: 1px solid rgba(255,255,255,.16); background: #0d1530; min-height: 100%; box-shadow: 0 16px 36px rgba(2,10,34,.45); display:grid; place-items:center; padding: .65rem; }
     .featured-shot img { max-width: 100%; width: auto; height: auto; object-fit: contain; transition: transform .45s ease, opacity .35s ease; background: rgba(3,8,24,.5); border-radius: 10px; }
     .thumb-stack {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-      grid-auto-rows: 84px;
-      grid-auto-flow: dense;
+      display: flex;
+      flex-wrap: wrap;
       gap: .55rem;
-      min-height: 100%;
+      align-content: flex-start;
       overflow: auto;
       padding-right: .2rem;
     }
-    .thumb-shot { cursor: pointer; box-shadow: 0 10px 22px rgba(2,10,34,.32); display:grid; place-items:center; padding: .35rem; transition: transform .35s var(--ease), opacity .35s var(--ease), border-color .35s var(--ease); }
-    .thumb-shot img { width: 100%; height: 100%; object-fit: contain; transition: transform .35s var(--ease), opacity .35s var(--ease); }
+    .thumb-shot { cursor: pointer; box-shadow: 0 10px 22px rgba(2,10,34,.32); display:grid; place-items:center; padding: .35rem; transition: transform .35s var(--ease), opacity .35s var(--ease), border-color .35s var(--ease); flex: 1 1 160px; min-width: 120px; max-width: 260px; aspect-ratio: 4 / 3; }
+    .thumb-shot.wide { flex-basis: 220px; aspect-ratio: 16 / 9; }
+    .thumb-shot.tall { flex-basis: 140px; aspect-ratio: 3 / 4; }
+    .thumb-shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s var(--ease), opacity .35s var(--ease); border-radius: 10px; }
     .thumb-shot:hover img { transform: scale(1.03); }
     .thumb-shot.active { border-color: rgba(255,255,255,.45); transform: translateY(-1px); opacity: 1; }
     .thumb-shot:not(.active) { opacity: .82; }
@@ -145,8 +157,8 @@
       .category-grid { grid-template-columns: 1fr; }
       .editorial-gallery { grid-template-columns: 1fr; height: auto; max-height: none; }
       .featured-shot { min-height: 260px; }
-      .thumb-stack { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 76px; max-height: 220px; }
-      .thumb-shot { min-height: 76px; }
+      .thumb-stack { max-height: 260px; }
+      .thumb-shot { min-height: 76px; flex-basis: 110px; }
       nav { flex-direction: column; gap: .7rem; }
       .hero h1 { margin-top: 7rem; }
       .profile-orb { width: clamp(120px, 34vw, 170px); }
@@ -174,12 +186,14 @@
   <main id="mainContent">
     <section class="hero visible" id="home">
       <h1>Earl Janssen B. Gan</h1><p>Future educator and creative professional building meaningful learning experiences with innovation, purpose, and passion.</p>
+      <div class="hero-tags"><span class="hero-tag">BSEd Mathematics</span><span class="hero-tag">Creative Editor</span><span class="hero-tag">Future Educator</span></div>
       <div class="cta"><a class="btn" href="#about">Explore About Me</a><a class="btn" href="#courses">View Academic Works</a></div>
+      <div class="scroll-indicator">SCROLL</div>
     </section>
     <section id="about"><h2 class="section-title">About Me</h2><p class="section-sub">Select a category to open details. Replace all placeholders with your personal information.</p>
       <div class="card-grid">
         <article class="card" data-modal="personal"><h3>Personal Background</h3><p>Background, values, profile, and aspirations.</p></article>
-        <article class="card" data-modal="education"><h3>Educational Attainment</h3><p>Degrees, certifications, schools, and honors.</p></article>
+        <article class="card card-emphasis" data-modal="education"><h3>Educational Attainment</h3><p>Degrees, certifications, schools, and honors.</p></article>
         <article class="card" data-modal="skills"><h3>Skills and Talents</h3><p>Technical, creative, and communication strengths.</p></article>
       </div>
     </section>
@@ -187,7 +201,7 @@
       <div class="contact-grid">
         <a class="card contact-card" href="https://www.facebook.com/ejgan14" target="_blank" rel="noopener noreferrer"><div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/500px-Facebook_Logo_%282019%29.png" alt="Facebook logo placeholder"></div><h4>Facebook</h4><p>Earl Janssen B. Gan</p></a>
         <a class="card contact-card" href="https://www.instagram.com/koixie_/" target="_blank" rel="noopener noreferrer"><div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/1280px-Instagram_icon.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail&_=20200512141346" alt="Instagram logo placeholder"></div><h4>Instagram</h4><p>koixie_</p></a>
-        <a class="card contact-card" href="mailto:ejgan22@gmail.com"><div class="icon"><img src="https://images.icon-icons.com/2642/PNG/512/google_mail_gmail_logo_icon_159346.png" alt="Gmail logo placeholder"></div><h4>Gmail</h4><p>EJGan22@gmail.com</p></a>
+        <a class="card contact-card card-emphasis" href="mailto:ejgan22@gmail.com"><div class="icon"><img src="https://images.icon-icons.com/2642/PNG/512/google_mail_gmail_logo_icon_159346.png" alt="Gmail logo placeholder"></div><h4>Gmail</h4><p>EJGan22@gmail.com</p></a>
         <a class="card contact-card" href="tel:+639365353404"><div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="Phone logo placeholder"></div><h4>Phone Number</h4><p>+63 936 535 3404</p></a>
         <a class="card contact-card" href="https://www.tiktok.com/@koixies" target="_blank" rel="noopener noreferrer"><div class="icon"><img src="https://static.vecteezy.com/system/resources/thumbnails/016/716/450/small_2x/tiktok-icon-free-png.png" alt="GitHub logo placeholder"></div><h4>Tiktok</h4><p>Koixie</p></a>
       </div>
@@ -231,6 +245,19 @@
     ['about', 'contacts', 'courses'].forEach((id) => {
       const sec = document.getElementById(id);
       if (sec) sectionObserver.observe(sec);
+    });
+    function applyStagger(container, selector) {
+      container.querySelectorAll(selector).forEach((el, idx) => {
+        el.classList.add('stagger-in');
+        el.style.animationDelay = `${idx * 70}ms`;
+      });
+    }
+    ['about', 'contacts', 'courses'].forEach((id) => {
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      if (id === 'about') applyStagger(sec, '.card');
+      if (id === 'contacts') applyStagger(sec, '.contact-card');
+      if (id === 'courses') applyStagger(sec, '.course-card');
     });
 
     const modalData = {
@@ -286,19 +313,19 @@
     // Course abbreviations: a=Assessment in Learning 2, t=The Teacher and the School Curriculum
     const galleryImages = {
       assessment: {
-        quizzes: ['IMG_20260424_084443.jpg', 'quiz2a.jpg', 'quiz3a.jpg'],
-        activities: ['IMG_20260213_094557.jpg', 'IMG_20260306_083824.jpg', 'IMG_20260407_090915_1.jpg', 'IMG_20260306_083826[1].jpg', 'IMG_20260410_092108.jpg', 'IMG_20260410_092112.jpg', 'IMG_20260410_092118.jpg', 'Screenshot 2026-05-13 060235.png'],
-        exams: ['exam1a.jpg', 'exam2a.jpg']
+        quizzes: ['IMG_20260424_084443.jpg'],
+        activities: ['IMG_20260213_094557.jpg', 'IMG_20260306_083824.jpg', 'IMG_20260407_090915_1.jpg', 'IMG_20260306_083826[1].jpg', 'IMG_20260410_092108.jpg', 'IMG_20260410_092112.jpg', 'IMG_20260410_092118.jpg'],
+        exams: ['exam1a.jpg']
       },
       teacher: {
-        quizzes: ['IMG_20260303_090004.jpg', 'quiz2t.jpg', 'quiz3t.jpg'],
-        activities: ['IMG_20260303_092934.jpg', 'IMG_20260505_090441.jpg', 'IMG_20260505_090429.jpg', 'Screenshot 2026-05-11 180153.png', 'Screenshot 2026-05-11 180242.png', 'Screenshot 2026-05-11 180314.png'  ],
-        exams: ['IMG_20260512_092217.jpg']
+        quizzes: ['IMG_20260303_090004.jpg'],
+        activities: ['IMG_20260303_092934.jpg', 'IMG_20260505_090441.jpg', 'activity1mt.jpg'],
+        exams: ['exam1t.jpg']
       }
     };
     const courseAlias = { assessment: 'assessment', curriculum: 'teacher' };
     const categoryAlias = { quizzes: 'quizzes', activities: 'activities', major_exam: 'exams' };
-    const resolveImagePath = (fileName) => `./${fileName}`;
+    const resolveImagePath = (fileName) => `./${encodeURIComponent(fileName).replace(/%2F/g, '/')}`;
     const gallery = document.getElementById('galleryView');
     const main = document.getElementById('mainContent');
     const title = document.getElementById('galleryTitle');
@@ -321,12 +348,13 @@
       projectView.style.display = 'none';
       categoryTitle.textContent = `${galleryData[activeCourse].subject}`;
       breadcrumb.textContent = `Course Portfolio / ${galleryData[activeCourse].subject}`;
-      categoryGrid.innerHTML = contentTypes.map((type) => `<article class="category-card" data-category="${type.toLowerCase().replace(/\\s+/g, '_')}"><h3>${type}</h3><p style="color:var(--muted)">Open ${type} outputs.</p></article>`).join('');
+      categoryGrid.innerHTML = contentTypes.map((type) => `<article class="category-card" data-category="${type.toLowerCase().replace(/\s+/g, '_')}"><h3>${type}</h3><p style="color:var(--muted)">Open ${type} outputs.</p></article>`).join('');
       categoryGrid.querySelectorAll('.category-card').forEach(card => card.addEventListener('click', () => {
         categoryGrid.querySelectorAll('.category-card').forEach(c => c.classList.remove('active-item'));
         card.classList.add('active-item');
         openCategory(card.dataset.category, card.querySelector('h3').textContent);
       }));
+      applyStagger(categoryGrid, '.category-card');
     }
 
     function buildEditorialGallery(images, label) {
@@ -335,7 +363,7 @@
       container.innerHTML = `
         <article id="featuredShot"></article>
         <aside class="thumb-stack">
-          ${thumbs.map((img, i) => `<article class="thumb-shot" data-image="${img}"><img loading="lazy" src="${img}" alt="${label} item ${i + 1}"></article>`).join('')}
+          ${thumbs.map((img, i) => `<article class="thumb-shot ${i % 5 === 0 ? 'wide' : i % 4 === 0 ? 'tall' : ''}" data-image="${img}"><img loading="lazy" src="${img}" alt="${label} item ${i + 1}"></article>`).join('')}
         </aside>`;
       const featuredMount = document.getElementById('featuredShot');
       const thumbCards = container.querySelectorAll('.thumb-shot');
